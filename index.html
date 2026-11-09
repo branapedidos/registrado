@@ -157,47 +157,16 @@ input[type=checkbox],input[type=radio]{accent-color:var(--acc)}
 <script>
 const DEPS=["Amazonas","Áncash","Apurímac","Arequipa","Ayacucho","Cajamarca","Callao","Cusco","Huancavelica","Huánuco","Ica","Junín","La Libertad","Lambayeque","Lima","Loreto","Madre de Dios","Moquegua","Pasco","Piura","Puno","San Martín","Tacna","Tumbes","Ucayali"];
 let k=0;const S=(d,ci,n,a)=>({c:"shalom",d,ci,n,a,id:"sh"+(++k)});
-const SEED=[
-  S("Lima","San Juan de Lurigancho","Av. Circunvalación","Av. Circunvalación Mz. B-5 Lt. 20, AA.HH. Sargento Fernando Lores Tenazoa"),
-  S("Lima","San Juan de Lurigancho","Av. Malecón Checa Cdra. 1","Av. Malecón Miguel Checa Eguiguren N° 167 y 169, Urb. Zárate"),
-  S("Lima","San Juan de Lurigancho","Av. Santa Rosa Urb. Los Álamos","Av. Santa Rosa Mz. D1 Lt. 1, Urb. Los Álamos 2da etapa (altura cdra. 13 paradero Canto Grande)"),
-  S("Lima","San Juan de Lurigancho","Av. 13 de Enero","Av. 13 de Enero N° 2057, Urb. San Hilarión"),
-  S("Lima","San Juan de Lurigancho","Av. Central","Av. Central Mz. R9 Lt. 3, Programa Ciudad Mcal. Cáceres, Sector II"),
-  S("Cajamarca","Cajamarca","Cajamarca Co","Av. Independencia N° 787, Barrio Santa Elena"),
-  S("Cajamarca","Cajamarca","Horacio Zevallos","Jr. Emilio Barrantes Mz. X Lt. 3 (cerca de UPN)"),
-  S("Cajamarca","Cajamarca","Barrio San José","Jr. Chanchamayo N° 1162"),
-  S("Cajamarca","Baños del Inca","Baños del Inca","Jr. Cahuide N° 242 (espaldas de Senati)"),
-  S("Cajamarca","Chota","Chota","Av. Fray José Arana N° 805 (frente al terminal Ángel Divino)"),
-  S("Ica","Ica","Ica San Joaquín","Pasaje Grau N° 101, San Joaquín (a 1 cdra. de Petroperú)"),
-  S("Ica","Ica","Ica Av. JJ Elías","Mz. B Sub-lote 02 Fundo La Palma (cruce Av. Cutervo con Av. J.J. Elías)"),
-  S("Ica","Ica","Ica Urb. Manzanilla","Av. Manuel Santana Chiri N° 359 A1 (cruce con Calle Baltazar Caravedo)"),
-  S("Ica","La Tinguiña","La Tinguiña","Calle Francisco Sales Sotelo N° 298 Sub Lote 3"),
-  S("Ica","Parcona","Parcona","CP Parcona-Cercado (Primera Etapa) Mz. B Lt. 16"),
-  S("Ayacucho","Huamanga","Carmen Alto","AA.HH. Carmen Alto Mz. B1 Lt. 9, Zona II Acuchimay"),
-  S("Ayacucho","Huamanga","San Juan Bautista","Av. Venezuela N° 431, Urb. Aprovisa (cerca al Seguro de EsSalud)"),
-  S("Ayacucho","Huanta","Huanta","Jr. Gervasio Santillana N° 976 (cruce con Jr. Revolución)"),
-  S("La Libertad","Trujillo","Calle Liverpool","Calle Liverpool N° 329, Urb. Santa Isabel (una cuadra antes de la Iglesia de Mansiche)"),
-  S("La Libertad","Trujillo","Calle Santa Cruz - América Sur","Calle Santa Cruz N° 389, Chicago"),
-  S("La Libertad","Trujillo","Jr. Cahuide","Jr. Cahuide N° 342, AA.HH. La Merced, El Porvenir"),
-  S("La Libertad","Huamachuco","Huamachuco","Jr. Simón Bolívar 763"),
-  S("La Libertad","Virú","Puente Virú","Panamericana Norte N° 933, Puente Virú"),
-  S("Piura","Ayabaca","Ayabaca","Calle Bolognesi N° 136"),
-  S("Piura","Sullana","Bellavista Sullana","Calle Moquegua 381, Bellavista"),
-  S("Piura","Morropón","Morropón","Jr. Adrianzén N° 099"),
-  S("Piura","Piura","Las Lomas","Jr. Miguel Grau Mz. H Lt. 7, Las Lomas"),
-  S("Piura","Talara","Talara Alta","9 de Octubre Mz. N-10, AA.HH. 9 de Octubre, Talara Alta"),
-  S("Ucayali","Callería","Callería Jr. José Gálvez","Jr. José Gálvez 147, Callería")
-];
+const SEED=[S("Lima","San Juan de Lurigancho","Av. Circunvalación","Av. Circunvalación Mz. B-5 Lt. 20, AA.HH. Sargento Fernando Lores Tenazoa"),S("Lima","San Juan de Lurigancho","Av. Malecón Checa Cdra. 1","Av. Malecón Miguel Checa Eguiguren N° 167 y 169, Urb. Zárate"),S("Lima","San Juan de Lurigancho","Av. Santa Rosa Urb. Los Álamos","Av. Santa Rosa Mz. D1 Lt. 1, Urb. Los Álamos 2da etapa (altura cdra. 13 paradero Canto Grande)"),S("Lima","San Juan de Lurigancho","Av. 13 de Enero","Av. 13 de Enero N° 2057, Urb. San Hilarión"),S("Lima","San Juan de Lurigancho","Av. Central","Av. Central Mz. R9 Lt. 3, Programa Ciudad Mcal. Cáceres, Sector II"),S("Cajamarca","Cajamarca","Cajamarca Co","Av. Independencia N° 787, Barrio Santa Elena"),S("Cajamarca","Cajamarca","Horacio Zevallos","Jr. Emilio Barrantes Mz. X Lt. 3 (cerca de UPN)"),S("Cajamarca","Cajamarca","Barrio San José","Jr. Chanchamayo N° 1162"),S("Cajamarca","Baños del Inca","Baños del Inca","Jr. Cahuide N° 242 (espaldas de Senati)"),S("Cajamarca","Chota","Chota","Av. Fray José Arana N° 805 (frente al terminal Ángel Divino)"),S("Ica","Ica","Ica San Joaquín","Pasaje Grau N° 101, San Joaquín (a 1 cdra. de Petroperú)"),S("Ica","Ica","Ica Av. JJ Elías","Mz. B Sub-lote 02 Fundo La Palma (cruce Av. Cutervo con Av. J.J. Elías)"),S("Ica","Ica","Ica Urb. Manzanilla","Av. Manuel Santana Chiri N° 359 A1 (cruce con Calle Baltazar Caravedo)"),S("Ica","La Tinguiña","La Tinguiña","Calle Francisco Sales Sotelo N° 298 Sub Lote 3"),S("Ica","Parcona","Parcona","CP Parcona-Cercado (Primera Etapa) Mz. B Lt. 16"),S("Ayacucho","Huamanga","Carmen Alto","AA.HH. Carmen Alto Mz. B1 Lt. 9, Zona II Acuchimay"),S("Ayacucho","Huamanga","San Juan Bautista","Av. Venezuela N° 431, Urb. Aprovisa (cerca al Seguro de EsSalud)"),S("Ayacucho","Huanta","Huanta","Jr. Gervasio Santillana N° 976 (cruce con Jr. Revolución)"),S("La Libertad","Trujillo","Calle Liverpool","Calle Liverpool N° 329, Urb. Santa Isabel (una cuadra antes de la Iglesia de Mansiche)"),S("La Libertad","Trujillo","Calle Santa Cruz - América Sur","Calle Santa Cruz N° 389, Chicago"),S("La Libertad","Trujillo","Jr. Cahuide","Jr. Cahuide N° 342, AA.HH. La Merced, El Porvenir"),S("La Libertad","Huamachuco","Huamachuco","Jr. Simón Bolívar 763"),S("La Libertad","Virú","Puente Virú","Panamericana Norte N° 933, Puente Virú"),S("Piura","Ayabaca","Ayabaca","Calle Bolognesi N° 136"),S("Piura","Sullana","Bellavista Sullana","Calle Moquegua 381, Bellavista"),S("Piura","Morropón","Morropón","Jr. Adrianzén N° 099"),S("Piura","Piura","Las Lomas","Jr. Miguel Grau Mz. H Lt. 7, Las Lomas"),S("Piura","Talara","Talara Alta","9 de Octubre Mz. N-10, AA.HH. 9 de Octubre, Talara Alta"),S("Ucayali","Callería","Callería Jr. José Gálvez","Jr. José Gálvez 147, Callería")];
 function openWa(u){const w=window.open(u,"_blank");if(!w){const a=document.createElement("a");a.href=u;a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove()}}
 const NAMES={shalom:"Shalom",olva:"Olva",tienda:"Retiro en tienda",domicilio:"A domicilio"};
 let mem={};
-const st={get(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):(mem[k]??def)}catch(e){return mem[k]??def}},
- set(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}if((k==="pedidos"||k==="papelera")&&window.__sync)window.__sync()}};
+const st={get(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):(mem[k]??def)}catch(e){return mem[k]??def}},set(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}if((k==="pedidos"||k==="papelera")&&window.__sync)window.__sync()}};
 let agencias=st.get("agencias",SEED).filter(a=>!(a.c==="shalom"&&/ejemplo/.test(a.n))), pedidos=st.get("pedidos",[]), tienda=st.get("tienda",{n:"Mi tienda",a:"Dirección y horario de atención"});
 let modo=null, agSel=null, tSel=null;
 let papelera=st.get("papelera",[]);
 const fmtN=n=>String(n||0).padStart(6,"0");
-(() => {const all=pedidos.concat(papelera);if(!st.get("num2",0)){all.sort((a,b)=>(a.f||"").localeCompare(b.f||"")).forEach((p,i)=>p.n=i+1);st.set("num2",1)}else{let mx=Math.max(0,...all.map(p=>p.n|0));all.forEach((p,i)=>{if(!p.n||p.n<1||p.n>mx+10)p.n=mx+i+1});}})();
+(()=>{const all=pedidos.concat(papelera);if(!st.get("num2",0)){all.sort((a,b)=>(a.f||"").localeCompare(b.f||"")).forEach((p,i)=>p.n=i+1);st.set("num2",1)}else{let mx=Math.max(0,...all.map(p=>p.n|0));all.forEach((p,i)=>{if(!p.n||p.n<1||p.n>mx+10)p.n=mx+i+1});}})();
 const ESTS=m=>m==="tienda"?["Pendiente","En tienda","Finalizado"]:m==="domicilio"?["Pendiente","Finalizado"]:["Pendiente","En agencia","Finalizado"];
 pedidos.concat(papelera).forEach(p=>{if(!ESTS(p.modo).includes(p.estado))p.estado=p.estado==="Entregado"?"Finalizado":(p.estado==="Enviado"&&p.modo!=="domicilio"?ESTS(p.modo)[1]:"Pendiente")});
 const LS=(()=>{try{localStorage.setItem("_t","1");localStorage.removeItem("_t");return true}catch(e){return false}})();
@@ -310,9 +279,7 @@ function bc(n){const t="*"+fmtN(n)+"*";let x=0,r="";for(const c of t){const q=T[
 const fEst=$("fEst"),fModo=$("fModo"),fQ=$("fQ");
 const visP=()=>pedidos.filter(p=>(!fEst.value||p.estado===fEst.value)&&(!fModo.value||p.modo===fModo.value)&&(!fQ.value.trim()||String(p.n)===String(parseInt(fQ.value,10))));
 fEst.onchange=fModo.onchange=()=>renderPedidos();fQ.oninput=()=>renderPedidos();
-async function saveX(buf,name){const dl=(window.claude&&claude.use)?await claude.use("downloads"):null;
- if(dl){try{await dl.save({filename:name,data:buf})}catch(e){if(!e||e.code!=="declined")toast("No se pudo descargar el Excel")}}
- else{const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([buf]));a.download=name;a.click()}}
+async function saveX(buf,name){const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([buf]));a.download=name;a.click();}
 const MED={"SOBRE":[.1,.1,.15,0],"PAQUETE XXS":[.15,.1,.1,.25],"PAQUETE XS":[.2,.15,.12,.5],"PAQUETE S":[.3,.3,.12,2],"PAQUETE M":[.3,.24,.2,5],"PAQUETE L":[.42,.3,.23,10]};
 $("dlS").onclick=async()=>{
   if(typeof XLSX==="undefined")return toast("No se pudo cargar el generador de Excel");
@@ -395,48 +362,50 @@ $("impB").onclick=()=>{let ok=0,mal=0;const emp=$("aC").value;
   const d=DEPS.find(x=>norm(x)===norm(p[0]));if(!d){mal++;return}
   agencias.push({id:"i"+Date.now().toString(36)+(ok++),c:emp,d,p:pr||d,di,ci:di||pr||d,n,a:ad})});
  st.set("agencias",agencias);$("impT").value="";renderAgencias();toast(ok+" agregadas"+(mal?", "+mal+" con error":""))};
-let syncOn=false,snap={},dirty=false,syncTimer=null,pushing=false,pushAgain=false,dbCol=null,pend=null;
+
+const GOOGLE_SHEET_WEB_APP_URL=(window.GOOGLE_SHEET_WEB_APP_URL||"").trim();
 const setSt=t=>{const e=$("syncSt");if(e)e.textContent=t};
-const curAll=()=>{const m={};pedidos.forEach(p=>m[p.id]={...p,trash:false});papelera.forEach(p=>m[p.id]={...p,trash:true});return m};
-window.__sync=()=>{if(!syncOn)return;dirty=true;clearTimeout(syncTimer);syncTimer=setTimeout(pushDb,700)};
-async function pushDb(){if(pushing){pushAgain=true;return}pushing=true;dirty=false;
- try{const c=curAll();
-  for(const id in c){const j=JSON.stringify(c[id]);if(snap[id]!==j){await dbCol.doc(id).set(c[id]);snap[id]=j}}
-  for(const id in snap){if(!c[id]){await dbCol.doc(id).delete();delete snap[id]}}
-  setSt("Las respuestas se guardan en el administrador ✓")
- }catch(e){setSt("No se pudo guardar en el administrador. Quedó guardado en este navegador.")}
- pushing=false;if(pushAgain||dirty){pushAgain=false;pushDb();return}
- if(pend){const x=pend;pend=null;applySnap(x)}}
-let firstSnap=true;
-function applySnap(sn){
- if(pushing||dirty||syncTimer&&false){pend=sn;return}
- const R={};sn.docs.forEach(d=>{const o=d.data();if(o)R[d.id]=o});
- const L=curAll(),next={};let changed=firstSnap,pending=false;
- for(const id in R){next[id]=R[id];if(JSON.stringify(R[id])!==JSON.stringify(L[id]))changed=true}
- for(const id in L){if(R[id])continue;if(id in snap)changed=true;else{next[id]=L[id];pending=true}}
- snap={};for(const id in R)snap[id]=JSON.stringify(R[id]);
- const all=Object.values(next);
- pedidos=all.filter(o=>!o.trash).map(o=>{const q={...o};delete q.trash;return q}).sort((a,b)=>(b.f||"").localeCompare(a.f||""));
- papelera=all.filter(o=>o.trash).map(o=>{const q={...o};delete q.trash;return q}).sort((a,b)=>(b.delAt||"").localeCompare(a.delAt||""));
- try{localStorage.setItem("pedidos",JSON.stringify(pedidos));localStorage.setItem("papelera",JSON.stringify(papelera))}catch(e){}
- firstSnap=false;
- if(changed){try{renderPedidos();renderPapelera();cnt()}catch(e){}}
- if(pending)pushDb();else setSt("Las respuestas se guardan en el administrador ✓")}
-(async()=>{
- setSt("Las respuestas se guardan solo en este navegador.");
- try{
-  if(!(window.claude&&claude.use))return;
-  const db=await claude.use("db");if(!db)return;
-  dbCol=db.collection("pedidos");syncOn=true;
-  dbCol.onSnapshot(applySnap,()=>{syncOn=false;setSt("No se pudo conectar con el administrador. Las respuestas quedan en este navegador.")});
-  setSt("Las respuestas se guardan en el administrador ✓");
- }catch(e){setSt("No se pudo conectar con el administrador. Las respuestas quedan en este navegador.")}
-})();
-const SHEET_ID="1b-Z7XqOzhYliK49NE7NLrz5MuBEns_jtFm8ZubWM_24";
+
 async function appendSheet(p){
-  try{const m=(window.claude&&claude.use)?await claude.use("mcp"):null;if(!m)return false;
-   const f=p.f?new Date(p.f).toLocaleString("es-PE",{timeZone:"America/Lima",hour12:false,day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}):"";
-   await m.callTool("Google Sheets","append_values",{spreadsheetId:SHEET_ID,range:"'Hoja 1'!A1",values:[[fmtN(p.n),f,p.estado,p.nom,p.dni||"",p.cel,NAMES[p.modo],p.dest||"",p.retiro||"",p.at||"",p.atTel||"",p.prod||""]]});
-   p.sh=1;st.set("pedidos",pedidos);return true}catch(e){return false}}
+  if(!GOOGLE_SHEET_WEB_APP_URL){
+    setSt("Configura la URL del Web App de Google Apps Script.");
+    return false;
+  }
+  try{
+    const now = p.f ? new Date(p.f).toLocaleString("es-PE",{timeZone:"America/Lima",hour12:false,day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}) : "";
+    const payload = {
+      values: [
+        fmtN(p.n),
+        now,
+        p.estado,
+        p.nom,
+        p.dni || "",
+        p.cel,
+        NAMES[p.modo],
+        p.dest || "",
+        p.retiro || "",
+        p.at || "",
+        p.atTel || "",
+        p.prod || ""
+      ]
+    };
+    const res = await fetch(GOOGLE_SHEET_WEB_APP_URL,{
+      method:"POST",
+      mode:"cors",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify(payload)
+    });
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const data = await res.json().catch(()=>({}));
+    if(data && data.ok === false) throw new Error(data.error || "Guardar falló");
+    p.sh=1; st.set("pedidos",pedidos);
+    setSt("Las respuestas se guardan en el administrador ✓");
+    return true;
+  }catch(e){
+    setSt("No se pudo conectar con el administrador. Las respuestas quedan en este navegador.");
+    return false;
+  }
+}
+
 renderTienda();cnt();
 </script>
