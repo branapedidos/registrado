@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="es">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Registro de pedidos - Brana</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root{--bg:#f6f8fb;--card:#fff;--ink:#1a2230;--mute:#667085;--line:#e4e8ee;--field:#eef1f5;--acc:#0b7a55;--accink:#fff;--accsoft:#e5f3ed;--shalom:#d6322b;--olva:#f08a00;--store:#1f7a5a;--shadow:0 1px 2px rgba(16,24,40,.04),0 8px 24px rgba(16,24,40,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1411;--card:#171f1b;--ink:#e8efea;--mute:#98a79f;--line:#27322c;--field:#212b26;--acc:#34b98a;--accink:#06241a;--accsoft:#16302a;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0e1411;--card:#171f1b;--ink:#e8efea;--mute:#98a79f;--line:#27322c;--field:#212b26;--acc:#34b98a;--accink:#06241a;--accsoft:#16302a;--shadow:0 1px 2px rgba(0,0,0,.3),0 8px 24px rgba(0,0,0,.25);color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,"Segoe UI",system-ui,-apple-system,Roboto,sans-serif}
+main{max-width:760px;margin:0 auto;padding-block:16px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-size:1.35rem;font-weight:700;letter-spacing:-.01em;margin:8px 0 16px}
+h2{font-size:1.05rem;font-weight:700;margin:0 0 12px}
+.ch{display:flex;gap:12px;align-items:center;margin-bottom:14px}.ch h2{margin:0}
+.ch i{flex:none;width:36px;height:36px;border-radius:12px;background:var(--accsoft);color:var(--acc);display:grid;place-items:center}
+.ch i svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+nav{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding:2px}
+nav button{flex:1;padding:9px 14px;border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:99px;font:inherit;font-weight:500;cursor:pointer;white-space:nowrap}
+nav button[aria-selected=true]{background:var(--accsoft);color:var(--acc);border-color:var(--acc);font-weight:600}
+.card{background:var(--card);border-radius:20px;padding:20px;margin-bottom:16px;box-shadow:var(--shadow)}
+label{display:block;font-size:.82rem;font-weight:600;color:var(--ink);margin-bottom:6px}
+input,select,textarea{width:100%;padding:11px 14px;border:1px solid transparent;border-radius:12px;background:var(--field);color:var(--ink);font:inherit}
+input::placeholder{color:var(--mute)}
+input:focus-visible,select:focus-visible,textarea:focus-visible,button:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+input[type=checkbox],input[type=radio]{accent-color:var(--acc)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.row>div,.field{margin-bottom:0}
+.field{margin-bottom:12px}
+@media(max-width:520px){.row{grid-template-columns:1fr}}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:14px}
+.opt{position:relative;border:1.5px solid var(--line);border-radius:14px;padding:12px 14px;text-align:left;cursor:pointer;background:var(--card);color:var(--ink);font:inherit;font-weight:600}
+.opt small{display:block;font-weight:400;font-size:.8rem;color:var(--mute);margin-top:2px}
+.opt[aria-pressed=true]{border-color:var(--acc);background:var(--accsoft);color:var(--acc)}
+.opt[aria-pressed=true]::after{content:"✓";position:absolute;top:10px;right:12px;font-weight:700}
+.ag{display:flex;gap:10px;align-items:flex-start;border:1.5px solid var(--line);border-radius:14px;padding:12px;margin-bottom:8px;cursor:pointer;background:var(--card)}
+.ag input{width:auto;margin-top:4px}
+.ag.sel{border-color:var(--acc);background:var(--accsoft)}
+.ag b{display:block}.ag span{color:var(--mute);font-size:.9rem}
+.btn{padding:12px 20px;border:0;border-radius:99px;background:var(--acc);color:var(--accink);font:inherit;font-weight:600;cursor:pointer;width:100%}
+.btn.sec{background:transparent;color:var(--ink);border:1px solid var(--line);width:auto;padding:8px 16px;font-weight:500}
+.hint{color:var(--mute);font-size:.9rem;margin:6px 0}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:.78rem;font-weight:600;color:#fff}
+.tag.shalom{background:var(--shalom)}.tag.olva{background:var(--olva)}.tag.tienda{background:var(--store)}.tag.domicilio{background:#5b4bc4}
+.ord{display:flex;justify-content:space-between;gap:10px;align-items:flex-start;border-top:1px solid var(--line);padding:14px 0}
+.ord:first-of-type{border-top:0}
+.acts{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+.toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--acc);color:var(--accink);padding:10px 18px;border-radius:99px;opacity:0;pointer-events:none;transition:opacity .2s}
+.toast.on{opacity:1}
+.hide{display:none}
+.docs{margin-top:8px;border:1px solid var(--line);border-radius:12px;padding:8px 12px}.docs summary{cursor:pointer;font-weight:600;font-size:.88rem}
+.vimg{max-width:140px;max-height:140px;border-radius:10px;border:1px solid var(--line);cursor:zoom-in;display:block;margin-bottom:6px}
+#prev{position:fixed;inset:0;background:var(--bg);z-index:50;overflow:auto;padding:12px}
+#prev .bar{display:flex;gap:8px;margin-bottom:12px}#prev .bar .btn{width:auto}
+.rot{width:4in;height:2in;background:#fff;color:#000;border:2px solid #000;display:flex;flex-direction:column;margin:0 auto 14px;font-family:"Segoe UI",Arial,sans-serif;overflow:hidden;box-sizing:border-box}
+.rot>div{border-bottom:1.5px solid #000;display:flex;align-items:center;padding:0 .1in;overflow:hidden}
+.rot>div:last-child{border-bottom:0}
+.rot .h{height:.46in;justify-content:space-between}.rot .h img{height:.36in}
+.rot .h b{display:block;font-size:13pt;line-height:1;text-align:right}.rot .h span{display:block;font-size:7pt;text-align:right;margin-top:2px}
+.rot .r{height:.27in;font-size:9pt;gap:5px}.rot .r b{white-space:nowrap}.rot .r i{font-style:normal;font-size:8.5pt;line-height:1.05;max-height:.28in;overflow:hidden;word-break:break-word}
+.rot .r2{height:.27in;padding:0}.rot .r2>div{flex:1;display:flex;align-items:center;padding:0 .1in;gap:5px;font-size:9pt;height:100%;overflow:hidden}.rot .r2>div+div{border-left:1.5px solid #000}
+.rot .f{flex:1;padding:0}
+.rot .f>div{height:100%;display:flex;align-items:center;justify-content:center}
+.rot .bc{flex:1.2;flex-direction:column;align-items:flex-start!important;justify-content:center;border-right:1.5px solid #000;padding:0 .1in;gap:1px}
+.rot .bc svg{width:1.7in;height:.3in}.rot .bc span{font-size:8pt;font-weight:800;line-height:1}
+.rot .fg{flex:1;gap:.1in;font-weight:800;font-size:16pt}.rot .fg svg{height:.42in}
+@media print{@page{size:4in 2in;margin:0}body>*:not(#prev){display:none!important}#prev{position:static;padding:0;background:#fff}#prev .bar{display:none}.rot{margin:0;page-break-after:always;break-after:page}}
+</style>
+
+<main>
+<h1>Registro de pedidos - Brana</h1>
+<nav role="tablist">
+  <button role="tab" data-t="nuevo" aria-selected="true">Nuevo pedido</button>
+  <button role="tab" data-t="pedidos" aria-selected="false">Pedidos <span id="cnt"></span></button>
+  <button role="tab" data-t="agencias" aria-selected="false">Agencias</button>
+  <button role="tab" data-t="papelera" aria-selected="false">Papelera <span id="cntP"></span></button>
+</nav>
+
+<div class="acts hide" id="salirBox" style="margin:-4px 0 12px"><button class="btn sec" id="salir" type="button">Cerrar sesión</button><a class="btn sec hide" id="sheetLink" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center">Abrir Google Sheets</a><button class="btn sec" id="setupSheet" type="button">Preparar hoja</button></div>
+
+<section id="nuevo">
+ <div class="card hide" id="ok"><h2>Pedido registrado</h2><p id="okTxt" style="white-space:pre-line;margin:0 0 12px"></p><div class="acts"><button class="btn" id="okWa" style="width:auto">Enviar al cliente</button><button class="btn hide" id="okWa2" style="width:auto">Enviar a quien atendió</button><button class="btn sec" id="okNew">Registrar otro</button></div></div>
+ <p class="hint" id="corte"></p>
+ <div class="card">
+  <div class="ch"><i aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></i><h2>Cliente</h2></div>
+  <div class="field"><label for="cel">WhatsApp del cliente (+51) · obligatorio</label><input id="cel" inputmode="numeric" pattern="[0-9]{9}" maxlength="9" placeholder="9 dígitos (solo números)" required><div class="hint" id="conoce"></div></div>
+  <div class="row"><div><label for="nom">Nombre y apellidos</label><input id="nom" autocomplete="off"></div>
+  <div><label for="dni">DNI/CE para recoger</label><input id="dni" maxlength="12"></div></div>
+ </div>
+
+ <div class="card">
+  <div class="ch"><i aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 8l-9-5-9 5v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></i><h2>¿Cómo recibe el pedido?</h2></div>
+  <div class="opts">
+   <button type="button" class="opt" data-k="shalom" aria-pressed="false">Shalom<small>Agencia</small></button>
+   <button type="button" class="opt" data-k="olva" aria-pressed="false">Olva<small>Agencia</small></button>
+   <button type="button" class="opt" data-k="tienda" aria-pressed="false">Retiro en tienda<small>Sin envío</small></button>
+   <button type="button" class="opt" data-k="domicilio" aria-pressed="false">A domicilio<small>Solo Lima</small></button>
+  </div>
+
+  <div id="courierBox" class="hide">
+   <div class="row">
+    <div><label for="dep">Departamento</label><select id="dep"></select></div>
+    <div><label for="pro">Provincia</label><select id="pro"></select></div>
+   </div>
+   <div class="field" id="disF"><label for="ciu">Distrito</label><select id="ciu"></select></div>
+   <label for="bus">Buscar agencia por nombre o dirección</label>
+   <input id="bus" class="field" placeholder="Ej. Javier Prado, mercado, terminal">
+   <div id="ags" style="margin-top:10px"></div>
+  </div>
+
+  <div id="tiendaBox" class="hide">
+   <div id="tList"></div>
+   <div class="field"><label for="tFecha">Día de retiro</label><input type="date" id="tFecha"></div>
+   <p class="hint" style="font-weight:600;color:var(--acc)">Tu pedido estará listo a partir de las 2:00 pm.</p>
+  </div>
+  <div id="domBox" class="hide">
+   <p class="hint">A domicilio solo está disponible en Lima.</p>
+   <div class="field"><label for="dist">Distrito (Lima)</label><select id="dist"></select></div>
+   <div class="field"><label for="dirx">Dirección exacta</label><input id="dirx"></div>
+   <div class="field"><label for="ref">Referencia</label><input id="ref"></div>
+  </div>
+ </div>
+ <div class="card"><div class="field"><label for="aten">¿Quién lo atendió? (opcional)</label><select id="aten"><option value="">Sin indicar</option><option value="955128016">Asesora - 955128016</option><option value="922865709">Asesora - 922865709</option><option value="otra">Otra</option></select></div>
+  <div class="field hide" id="atenOtroF"><label for="atenOtro">Nombre o WhatsApp de su asesora (opcional)</label><input id="atenOtro" maxlength="40" placeholder="Ej. María o 987654321"></div>
+  <p class="hint">Al guardar, se abrirá WhatsApp con el resumen para quien lo atendió.</p></div>
+ <button class="btn" id="guardar">Guardar pedido</button>
+</section>
+
+<section id="pedidos" class="hide"><div class="card">
+ <div class="row"><div><label for="fEst">Estado</label><select id="fEst"><option value="">Todos</option><option>Pendiente</option><option>En agencia</option><option>En tienda</option><option>Finalizado</option></select></div>
+ <div><label for="fModo">Cómo recibe el pedido</label><select id="fModo"><option value="">Todos</option><option value="shalom">Shalom</option><option value="olva">Olva</option><option value="tienda">Retiro en tienda</option><option value="domicilio">A domicilio</option></select></div></div>
+ <div class="field"><label for="fQ">Buscar N.º de pedido (o escanear el código de barras)</label><input id="fQ" inputmode="numeric" placeholder="Ej. 12 o 000012"></div>
+ <div class="acts"><button class="btn sec" id="dlX">Descargar Excel</button><button class="btn sec" id="dlS">Excel Shalom (envío masivo)</button></div></div><div class="card" id="lista"></div></section>
+
+<section id="papelera" class="hide"><div class="card" id="pList"></div></section>
+
+<section id="login" class="hide"><div class="card"><div class="ch"><i aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></i><h2>Acceso del equipo</h2></div><p class="hint">Esta sección es privada. Ingresa con tu usuario y contraseña.</p><form id="lgF"><div class="field"><label for="lgU">Usuario</label><input id="lgU" autocomplete="username" autocapitalize="none"></div><div class="field"><label for="lgP">Contraseña</label><input id="lgP" type="password" autocomplete="current-password"></div><button class="btn" type="submit">Entrar</button></form></div></section>
+
+<section id="agencias" class="hide">
+ <div class="card">
+  <h2>Hora de corte</h2>
+  <div class="field"><label for="sCor">Hora de corte para envíos</label><input type="time" id="sCor"></div>
+  <button class="btn sec" id="gTienda">Guardar tienda</button>
+ </div>
+ <div class="card"><h2>Pegar lista de agencias</h2>
+  <div class="field"><label for="aC">Empresa</label><select id="aC"><option value="shalom">Shalom</option><option value="olva">Olva</option></select></div>
+  <p class="hint">Una agencia por línea: Departamento | Provincia | Distrito | Nombre | Dirección</p>
+  <textarea id="impT" rows="5" placeholder="Arequipa | Arequipa | Cayma | Shalom Cayma | Av. Ejemplo 123"></textarea>
+  <button class="btn sec" id="impB" style="margin-top:8px">Importar lista</button>
+ </div>
+ </section>
+</main>
+<div id="prev" class="hide"><div class="bar"><button class="btn" id="prPrint">Imprimir rótulos</button><button class="btn sec" id="prClose">Cerrar</button></div><div id="prBody"></div></div>
+<p class="hint" id="syncSt" style="text-align:center"></p>
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const DEPS=["Amazonas","Áncash","Apurímac","Arequipa","Ayacucho","Cajamarca","Callao","Cusco","Huancavelica","Huánuco","Ica","Junín","La Libertad","Lambayeque","Lima","Loreto","Madre de Dios","Moquegua","Pasco","Piura","Puno","San Martín","Tacna","Tumbes","Ucayali"];
+let k=0;const S=(d,ci,n,a)=>({c:"shalom",d,ci,n,a,id:"sh"+(++k)});
+const SEED=[
+ S("Lima","San Juan de Lurigancho","Av. Circunvalación","Av. Circunvalación Mz. B-5 Lt. 20, AA.HH. Sargento Fernando Lores Tenazoa"),
+ S("Lima","San Juan de Lurigancho","Av. Malecón Checa Cdra. 1","Av. Malecón Miguel Checa Eguiguren N° 167 y 169, Urb. Zárate"),
+ S("Lima","San Juan de Lurigancho","Av. Santa Rosa Urb. Los Álamos","Av. Santa Rosa Mz. D1 Lt. 1, Urb. Los Álamos 2da etapa (altura cdra. 13 paradero Canto Grande)"),
+ S("Lima","San Juan de Lurigancho","Av. 13 de Enero","Av. 13 de Enero N° 2057, Urb. San Hilarión"),
+ S("Lima","San Juan de Lurigancho","Av. Central","Av. Central Mz. R9 Lt. 3, Programa Ciudad Mcal. Cáceres, Sector II"),
+ S("Cajamarca","Cajamarca","Cajamarca Co","Av. Independencia N° 787, Barrio Santa Elena"),
+ S("Cajamarca","Cajamarca","Horacio Zevallos","Jr. Emilio Barrantes Mz. X Lt. 3 (cerca de UPN)"),
+ S("Cajamarca","Cajamarca","Barrio San José","Jr. Chanchamayo N° 1162"),
+ S("Cajamarca","Baños del Inca","Baños del Inca","Jr. Cahuide N° 242 (espaldas de Senati)"),
+ S("Cajamarca","Chota","Chota","Av. Fray José Arana N° 805 (frente al terminal Ángel Divino)"),
+ S("Ica","Ica","Ica San Joaquín","Pasaje Grau N° 101, San Joaquín (a 1 cdra. de Petroperú)"),
+ S("Ica","Ica","Ica Av. JJ Elías","Mz. B Sub-lote 02 Fundo La Palma (cruce Av. Cutervo con Av. J.J. Elías)"),
+ S("Ica","Ica","Ica Urb. Manzanilla","Av. Manuel Santana Chiri N° 359 A1 (cruce con Calle Baltazar Caravedo)"),
+ S("Ica","La Tinguiña","La Tinguiña","Calle Francisco Sales Sotelo N° 298 Sub Lote 3"),
+ S("Ica","Parcona","Parcona","CP Parcona-Cercado (Primera Etapa) Mz. B Lt. 16"),
+ S("Ayacucho","Huamanga","Carmen Alto","AA.HH. Carmen Alto Mz. B1 Lt. 9, Zona II Acuchimay"),
+ S("Ayacucho","Huamanga","San Juan Bautista","Av. Venezuela N° 431, Urb. Aprovisa (cerca al Seguro de EsSalud)"),
+ S("Ayacucho","Huanta","Huanta","Jr. Gervasio Santillana N° 976 (cruce con Jr. Revolución)"),
+ S("La Libertad","Trujillo","Calle Liverpool","Calle Liverpool N° 329, Urb. Santa Isabel (una cuadra antes de la Iglesia de Mansiche)"),
+ S("La Libertad","Trujillo","Calle Santa Cruz - América Sur","Calle Santa Cruz N° 389, Chicago"),
+ S("La Libertad","Trujillo","Jr. Cahuide","Jr. Cahuide N° 342, AA.HH. La Merced, El Porvenir"),
+ S("La Libertad","Huamachuco","Huamachuco","Jr. Simón Bolívar 763"),
+ S("La Libertad","Virú","Puente Virú","Panamericana Norte N° 933, Puente Virú"),
+ S("Piura","Ayabaca","Ayabaca","Calle Bolognesi N° 136"),
+ S("Piura","Sullana","Bellavista Sullana","Calle Moquegua 381, Bellavista"),
+ S("Piura","Morropón","Morropón","Jr. Adrianzén N° 099"),
+ S("Piura","Piura","Las Lomas","Jr. Miguel Grau Mz. H Lt. 7, Las Lomas"),
+ S("Piura","Talara","Talara Alta","9 de Octubre Mz. N-10, AA.HH. 9 de Octubre, Talara Alta"),
+ S("Ucayali","Calléria","Calléria Jr. José Gálvez","Jr. José Gálvez 147, Calléria"),
+];
+function openWa(u){const w=window.open(u,"_blank");if(!w){const a=document.createElement("a");a.href=u;a.target="_blank";a.rel="noopener";document.body.appendChild(a);a.click();a.remove()}}
+const NAMES={shalom:"Shalom",olva:"Olva",tienda:"Retiro en tienda",domicilio:"A domicilio"};
+let mem={};
+const st={get(k,def){try{const v=localStorage.getItem(k);return v?JSON.parse(v):(mem[k]??def)}catch(e){return mem[k]??def}},
+ set(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}if((k==="pedidos"||k==="papelera")&&window.__sync)window.__sync()}};
+let agencias=st.get("agencias",SEED).filter(a=>!(a.c==="shalom"&&/ejemplo/.test(a.n))), pedidos=st.get("pedidos",[]), tienda=st.get("tienda",{n:"Mi tienda",a:"Dirección y horario de atención"});
+let modo=null, agSel=null, tSel=null;
+let papelera=st.get("papelera",[]);
+const fmtN=n=>String(n||0).padStart(6,"0");
+(()=>{const all=pedidos.concat(papelera);if(!st.get("num2",0)){all.sort((a,b)=>(a.f||"").localeCompare(b.f||"")).forEach((p,i)=>p.n=i+1);st.set("num2",1)}else{let mx=Math.max(0,...all.map(p=>p.n||0));all.filter(p=>!p.n).forEach(p=>p.n=++mx)}st.set("pedidos",pedidos);st.set("papelera",papelera)})();
+const ESTS=m=>m==="tienda"?["Pendiente","En tienda","Finalizado"]:m==="domicilio"?["Pendiente","Finalizado"]:["Pendiente","En agencia","Finalizado"];
+pedidos.concat(papelera).forEach(p=>{if(!ESTS(p.modo).includes(p.estado))p.estado=p.estado==="Entregado"?"Finalizado":(p.estado==="Enviado"&&p.modo!=="domicilio"?ESTS(p.modo)[1]:"Pendiente")});st.set("pedidos",pedidos);st.set("papelera",papelera);
+const LS=(()=>{try{localStorage.setItem("_t","1");localStorage.removeItem("_t");return true}catch(e){return false}})();
+const isC=()=>modo==="shalom"||modo==="olva";
+const normTel=s=>s.replace(/[^0-9]/g,"").slice(-9);
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function toast(m){const t=$("toast");t.textContent=m;t.classList.add("on");setTimeout(()=>t.classList.remove("on"),2200)}
+
+let authed=false;
+let want="nuevo";
+function showTab(t){want=t;const lock=t!=="nuevo"&&!authed;
+ document.querySelectorAll("nav button").forEach(x=>x.setAttribute("aria-selected",x.dataset.t===t));
+ ["nuevo","pedidos","agencias","papelera","login"].forEach(s=>$(s).classList.toggle("hide",s!==(lock?"login":t)));
+ $("salirBox").classList.toggle("hide",!authed);
+ if(lock)return;
+ if(t==="pedidos")renderPedidos(); if(t==="agencias")renderAgencias(); if(t==="papelera")renderPapelera();
+}
+document.querySelectorAll("nav button").forEach(b=>b.onclick=()=>showTab(b.dataset.t));
+$("lgF").onsubmit=async e=>{e.preventDefault();
+ try{const r=await api("/api/login",{user:$("lgU").value.trim(),pass:$("lgP").value});try{localStorage.setItem(TK,r.token)}catch(x){}$("lgP").value="";startTeam()}
+ catch(x){toast(x.status===401?"Usuario o contraseña incorrectos":(x.message||"No se pudo conectar con el servidor"))}};
+$("salir").onclick=()=>logout();
+$("setupSheet").onclick=async()=>{try{toast("Preparando la hoja…");await api("/api/setup",{});toast("Hoja de Google lista ✓")}catch(x){toast(x.message||"No se pudo preparar la hoja")}};
+
+function fillDeps(sel,all){sel.innerHTML=(all?"":'<option value="">Elige departamento</option>')+DEPS.map(d=>`<option>${d}</option>`).join("")}
+fillDeps($("dep"));
+
+document.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+ modo=b.dataset.k;agSel=null;
+ document.querySelectorAll(".opt").forEach(x=>x.setAttribute("aria-pressed",x===b));
+ $("courierBox").classList.toggle("hide",!isC());
+ $("domBox").classList.toggle("hide",modo!=="domicilio");
+ $("tiendaBox").classList.toggle("hide",modo!=="tienda");
+ $("dep").value="";fillCiudades();renderAgs();
+});
+const PV=a=>a.p||a.ci||a.d;
+function fillCiudades(){
+ const d=$("dep").value;
+ const ps=[...new Set(agencias.filter(a=>a.c===modo&&a.d===d).map(PV))].sort();
+ $("pro").innerHTML=d?(ps.length?'<option value="">Todas</option>'+ps.map(c=>`<option>${esc(c)}</option>`).join(""):'<option value="">Sin agencias cargadas</option>'):'<option value="">Elige departamento primero</option>';
+ fillDis();
+}
+function fillDis(){
+ const d=$("dep").value,p=$("pro").value;
+ const ds=[...new Set(agencias.filter(a=>a.c===modo&&a.d===d&&(!p||PV(a)===p)&&a.di).map(a=>a.di))].sort();
+ $("ciu").innerHTML='<option value="">Todos</option>'+ds.map(c=>`<option>${esc(c)}</option>`).join("");
+ $("disF").classList.toggle("hide",!ds.length);
+}
+function renderAgs(){
+ const box=$("ags");if(!isC()){box.innerHTML="";return}
+ const d=$("dep").value,pr=$("pro").value,ci=$("ciu").value,q=$("bus").value.toLowerCase();
+ if(!d){box.innerHTML='<p class="hint">Elige un departamento para ver las agencias de '+NAMES[modo]+'.</p>';return}
+ const l=agencias.filter(a=>a.c===modo&&a.d===d&&(!pr||PV(a)===pr)&&(!ci||a.di===ci)&&(a.n+a.a).toLowerCase().includes(q));
+ box.innerHTML=l.length?l.map(a=>`<label class="ag${agSel&&agSel.id===a.id?" sel":""}"><input type="radio" name="ag" value="${a.id}"${agSel&&agSel.id===a.id?" checked":""}><div><b>${esc(a.n)}</b><span>${esc([PV(a),a.di].filter((x,i,arr)=>x&&arr.indexOf(x)===i).join(" / "))} · ${esc(a.a)}${a.h?" · "+esc(a.h):""}${a.la!==undefined&&a.la!==""?` · <a href="https://www.google.com/maps?q=${a.la},${a.lo}" target="_blank" rel="noopener">Ver mapa</a>`:""}</span></div></label>`).join(""):'<p class="hint">No hay agencias con esos datos. Agrégala en la pestaña Agencias.</p>';
+ box.querySelectorAll("input").forEach(r=>r.onchange=()=>{agSel=agencias.find(a=>a.id===r.value);renderAgs()});
+}
+$("dep").onchange=()=>{agSel=null;fillCiudades();renderAgs()};
+$("pro").onchange=()=>{agSel=null;fillDis();renderAgs()};
+$("ciu").onchange=()=>{agSel=null;renderAgs()};
+$("bus").oninput=renderAgs;
+
+const TIENDAS=[{id:"t1",n:"Jesús María",a:"Av. Arnaldo Márquez 1082",h:"L-D: 11 am - 8 pm"},{id:"t2",n:"Centro de Lima · Galería Barrio Chino",a:"Jr. Paruro 860 o Jr. Ucayali 724, Tienda 1077",h:"L-D: 11 am - 7 pm"},{id:"t3",n:"Surco · Rue Paradise",a:"C.C. Caminos del Inca, stand 123",h:"L-S: 12 pm - 8 pm"}];
+function renderTienda(){$("tList").innerHTML=TIENDAS.map(t=>`<label class="ag${tSel&&tSel.id===t.id?" sel":""}"><input type="radio" name="tn" value="${t.id}"${tSel&&tSel.id===t.id?" checked":""}><div><b>${t.n}</b><span>${t.a} · ${t.h}</span></div></label>`).join("");
+ $("tList").querySelectorAll("input").forEach(r=>r.onchange=()=>{tSel=TIENDAS.find(t=>t.id===r.value);renderTienda()});
+ $("sCor").value=tienda.corte||"";$("corte").textContent=tienda.corte?"Hora de corte: "+tienda.corte+". Los pedidos registrados después salen al día siguiente.":""}
+$("gTienda").onclick=()=>{tienda={...tienda,corte:$("sCor").value};st.set("tienda",tienda);renderTienda();toast("Tienda guardada")};
+
+let guardando=false;
+$("guardar").onclick=async()=>{
+ const nom=$("nom").value.trim(),dni=$("dni").value.trim(),cel=$("cel").value.trim();
+ if(!nom)return toast("Falta el nombre");
+ if(!dni||!/^[A-Za-z0-9]{8,12}$/.test(dni))return toast("Revisa el DNI o CE");
+ if(!/^[0-9]{9}$/.test(cel))return toast("El WhatsApp debe tener 9 dígitos numéricos");
+ if(!modo)return toast("Elige cómo recibe el pedido");
+ if(isC()&&!agSel)return toast("Elige una agencia");
+ if(modo==="domicilio"){
+  if(!$("dist").value)return toast("Elige el distrito (solo Lima)");
+  if(!$("dirx").value.trim())return toast("Falta la dirección exacta");
+  if(!$("ref").value.trim())return toast("Falta la referencia");
+ }
+ if(modo==="tienda"){
+  if(!tSel)return toast("Elige una tienda");
+  if(!$("tFecha").value)return toast("Falta el día de retiro");
+ }
+ const av=$("aten").value;let atTel="",at="";
+ if(av==="otra"){const o=$("atenOtro").value.trim(),dg=o.replace(/[\s-]/g,"");atTel=/^[0-9]{9}$/.test(dg)?dg:"";at=o?"Otra - "+o:"Otra"}
+ else if(av){atTel=av;at="Asesora - "+av}
+ if(guardando)return;guardando=true;
+ let nn=Math.max(0,...pedidos.concat(papelera).map(p=>p.n||0))+1;
+  const p={id:Date.now().toString(36)+Math.random().toString(36).slice(2,7),n:nn,f:new Date().toISOString(),nom,dni,cel,modo,at,atTel,estado:"Pendiente"};
+ if(modo==="tienda"){p.dest=tSel.n+" · "+tSel.a+" ("+tSel.h+")";p.retiro=$("tFecha").value+" · listo desde las 2:00 pm"}
+ else if(modo==="domicilio")p.dest=$("dist").value.trim()+" · "+$("dirx").value.trim()+" · Ref: "+($("ref").value.trim()||"-");
+ else p.dest=agSel.n+" · "+[agSel.d,agSel.p,agSel.di].filter(Boolean).join(" / ")+" · "+agSel.a;
+ if(isC())p.agN=agSel.n;
+ p.prov=true;
+ try{const r=await Promise.race([api("/api/pedidos",{order:p}),new Promise((_,x)=>setTimeout(()=>x(new Error("tiempo")),10000))]);p.n=r.n;delete p.prov}
+ catch(e){if(e&&e.status&&e.status<500&&e.status!==429){guardando=false;return toast(e.message||"No se pudo guardar el pedido")}}
+ guardando=false;
+ pedidos.unshift(p);st.set("pedidos",pedidos);queueNew(p);
+ const cl=st.get("clientes",{});cl[normTel(cel)]={nom,dni};st.set("clientes",cl);
+ ["nom","dni","cel","tFecha","bus","dist","dirx","ref","aten","atenOtro"].forEach(i=>$(i).value="");$("atenOtroF").classList.add("hide");$("conoce").textContent="";
+ agSel=null;tSel=null;$("dep").value="";fillCiudades();renderAgs();renderTienda();cnt();showOk(p);
+ if(p.atTel)openWa("https://wa.me/51"+p.atTel+"?text="+encodeURIComponent(resumen(p)),"_blank");
+};
+function cnt(){$("cntP").textContent=authed&&papelera.length?"("+papelera.length+")":"";const n=pedidos.filter(p=>p.estado==="Pendiente").length;$("cnt").textContent=authed&&n?"("+n+")":""}
+function resumen(p){return `Pedido N.º ${fmtN(p.n)} · ${NAMES[p.modo]}\nCliente: ${p.nom}\nDNI: ${p.dni||"-"}\nCel: ${p.cel}\nDestino: ${p.dest}${p.retiro?"\nRetiro: "+p.retiro:""}${p.prod?"\nProductos: "+p.prod:""}${p.at?"\nAtendió: "+p.at:""}`}
+const selP=new Set();let vaciar=false;
+function renderPapelera(){const L=$("pList");
+ L.innerHTML=papelera.length?`<p class="hint">Los pedidos aquí se pueden restaurar. Se pierden solo al eliminarlos definitivamente.</p><div class="acts" style="margin-bottom:8px"><button class="btn sec" id="pVac">${vaciar?"¿Seguro? Toca otra vez":"Vaciar papelera"}</button></div>`+papelera.map(p=>`<div class="ord"><div><b>N.º ${fmtN(p.n)}</b> · <span class="tag ${p.modo}">${NAMES[p.modo]}</span> <b>${esc(p.nom)}</b><div class="hint">${esc(p.dest||"")}</div><div class="hint">${esc(p.cel)} · Eliminado: ${esc(p.delAt?new Date(p.delAt).toLocaleString("es-PE"):"-")}</div><div class="acts"><button class="btn sec" data-r="res" data-i="${p.id}">Restaurar</button><button class="btn sec" data-r="del" data-i="${p.id}">Eliminar definitivamente</button></div></div></div>`).join(""):'<p class="hint">La papelera está vacía.</p>';
+ if($("pVac"))$("pVac").onclick=()=>{if(!vaciar){vaciar=true;renderPapelera();setTimeout(()=>{vaciar=false;if(!$("papelera").classList.contains("hide"))renderPapelera()},4000);return}vaciar=false;papelera=[];st.set("papelera",papelera);renderPapelera();cnt();toast("Papelera vaciada")};
+ L.querySelectorAll("[data-r]").forEach(b=>b.onclick=()=>{const p=papelera.find(x=>x.id===b.dataset.i);if(!p)return;
+  papelera=papelera.filter(x=>x.id!==p.id);st.set("papelera",papelera);
+  if(b.dataset.r==="res"){delete p.delAt;pedidos.push(p);pedidos.sort((a,b)=>(b.f||"").localeCompare(a.f||""));st.set("pedidos",pedidos);toast("Pedido restaurado")}else toast("Eliminado definitivamente");
+  renderPapelera();cnt()})}
+const LOGO="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAU8AAABoAQAAAABZaE9lAAADX0lEQVR42u2YPY7kNhCFP6qFbgUDdAcOOjCmdYQJHSwwPIKPYPgUm5kLG7CP4aPIN5gbWIEBd6gFNpAXWj4HRaqp7pmxHDgxhoBGP/2q6lWx+EiMEyuHKlaPN2gFP62EOqnS2imIhPVcu7XQ6d9UoF8LHd964A36f4UO66EfnWuLTx+dT08Hu/3l7EEDwEaSpHEnCXb21nFKdycpJig/SJKCkyZAkhSTTQQeC+hJkiaQBvtFGsGlO3sp5goMAJ8g8JSX+xkUgDFdGfoJ4ImkNWeAX9P1BHy+pGWhAjzGOUsssAJAwZXMf8qGESyvlPbMlQARMAkTlzeDdsXEdgk1ZsMJw0ewRGdon1BDNhyT+ylXaIYOhvJ9NhySewszFtBxIZ5DfssyPRXQyT6HLht25eTkdtmmUgIubSG7VE5O6lLdIxrYDOkZNsqXjPFeHU4dzuoa73KDuknwdY69vze2Wx6QcRXfgIhwD9DyQETw4AIQONLkVXAM25RYS4TOfgGPZwRathBsbXUuQEilcVBbjEALAo/LXus+FcilubEKOjgw2SwHOiqgGmguDVGBAyYqjIkrVqwb2QIDNWB/CFBDnbvF51ghWTZFYy3Xf0tv0HcQoLd132RIc6U9FUDb4Rc7radL+2k0RoesLt8mRFtIStFGpdenhFqOwyX5GVpb8A6fW+4Zw4EK2IzDddhyNOmqALbjail2gdtyPgudeLde4O/XQRtg/xqkVMLI3XuWmv4yget9pn8Jqg+vbEn10mtgGkphue2CIUN31wG75wnU8P4U87w3t6e5mMhX5uT3fhEvlL5Ucu05LELenn07oDJwE/Ap4VmoKbQ/ZK/noiQXoSarQWdhKtOJquDnrzPrLUwF8MW2sPTe21Z3CX+2DdDc+XOxjP7AL71+Nlsj+VtbUPuyWHx45HJAv+iY8M9nl/olUFtA26t4t3IwQw+UUtU+t7YztFkYH17jWi+8NS/2dpUz8ymt+hq6KaBuUaTbtRMSsSo9b4o5uErQF06+S3Hd3JoP+Gb22BbydgCOs3W7KG4FR+ArWirgLnk2mkdwvxBqfLLZAt/j7UxnR6B+N5/vJqcJ5W8BJxTtA3tJ4z6fGh/1s+QkaThJGtjrzwTVjypG3OtqfJCk6N7+P/CfQP8Gkc+08MyKLPkAAAAASUVORK5CYII=";
+const FR='<svg viewBox="0 0 120 100" fill="#000"><path d="M8 6h44v20L36 42v30h10v8H14v-8h10V42L8 26z" transform="translate(0,2)"/><path d="M78 8l-14 18h9v44h10V26h9zM104 8L90 26h9v44h10V26h9z" transform="translate(-4,4) scale(.9)"/><rect x="62" y="84" width="52" height="5"/></svg>';
+const T={0:"nnnwwnwnn",1:"wnnwnnnnw",2:"nnwwnnnnw",3:"wnwwnnnnn",4:"nnnwwnnnw",5:"wnnwwnnnn",6:"nnwwwnnnn",7:"nnnwnnwnw",8:"wnnwnnwnn",9:"nnwwnnwnn","*":"nwnnwnwnn"};
+function bc(n){const t="*"+fmtN(n)+"*";let x=0,r="";for(const c of t){const q=T[c];for(let j=0;j<9;j++){const w=q[j]==="w"?3:1;if(j%2===0)r+=`<rect x="${x}" y="0" width="${w}" height="10"/>`;x+=w}x+=1}return `<svg viewBox="0 0 ${x-1} 10" preserveAspectRatio="none" fill="#000" role="img" aria-label="Código de barras ${fmtN(n)}">${r}</svg>`}
+function rotulo(p){const e=esc;return `<div class="rot"><div class="h"><img src="${LOGO}" alt="brana"><div><b>BRANA PERU</b><span>955128016 / 922865709</span></div></div><div class="r"><b>CLIENTE:</b><i>${e(p.nom)}</i></div><div class="r"><b>DESTINO:</b><i>${e(NAMES[p.modo])}</i></div><div class="r2"><div><b>DNI:</b><i style="font-style:normal">${e(p.dni||"-")}</i></div><div><b>CEL:</b><i style="font-style:normal">${e(p.cel)}</i></div></div><div class="f"><div class="bc">${bc(p.n)}<span>N.º ${fmtN(p.n)}</span></div><div class="fg">${FR}<span>FRÁGIL</span></div></div></div>`}
+const loadImg=src=>new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src});
+async function rotuloPNG(p){
+ const W=1200,H=600,c=document.createElement("canvas");c.width=W;c.height=H;const x=c.getContext("2d");
+ const F='"Segoe UI",Arial,sans-serif';
+ x.fillStyle="#fff";x.fillRect(0,0,W,H);x.fillStyle="#000";x.strokeStyle="#000";
+ x.lineWidth=6;x.strokeRect(3,3,W-6,H-6);x.lineWidth=5;
+ [138,219,300,381].forEach(y=>{x.beginPath();x.moveTo(0,y);x.lineTo(W,y);x.stroke()});
+ const vl=(xx,a,b)=>{x.beginPath();x.moveTo(xx,a);x.lineTo(xx,b);x.stroke()};
+ vl(600,300,381);vl(655,381,H);
+ try{const lg=await loadImg(LOGO);const h=108,w=h*lg.width/lg.height;x.drawImage(lg,30,15,w,h)}catch(e){}
+ x.textAlign="right";x.textBaseline="alphabetic";x.font="bold 54px "+F;x.fillText("BRANA PERU",1170,82);x.font="29px "+F;x.fillText("955128016 / 922865709",1170,118);
+ const row=(y0,h,lbl,val,x0,x1)=>{x.textAlign="left";x.textBaseline="middle";x.font="bold 37px "+F;x.fillText(lbl,x0,y0+h/2);const lw=x.measureText(lbl).width+16;let fs=35;x.font=fs+"px "+F;const mw=x1-x0-lw;while(x.measureText(val).width>mw&&fs>20){fs--;x.font=fs+"px "+F}let t=String(val);while(x.measureText(t).width>mw&&t.length>1)t=t.slice(0,-1);x.fillText(t+(t!==String(val)?"…":""),x0+lw,y0+h/2)};
+ row(138,81,"CLIENTE:",p.nom||"",30,1170);row(219,81,"DESTINO:",NAMES[p.modo]||"",30,1170);
+ row(300,81,"DNI:",p.dni||"-",30,590);row(300,81,"CEL:",p.cel||"",630,1170);
+ const t="*"+fmtN(p.n)+"*";let u=0;const bars=[];for(const ch of t){const q=T[ch];for(let j=0;j<9;j++){const w=q[j]==="w"?3:1;if(j%2===0)bars.push([u,w]);u+=w}u+=1}u-=1;
+ const sc=595/u;bars.forEach(([a,w])=>x.fillRect(30+a*sc,400,Math.max(1,w*sc),110));
+ x.textAlign="left";x.textBaseline="middle";x.font="bold 40px "+F;x.fillText("N.º "+fmtN(p.n),30,555);
+ try{const fr=await loadImg("data:image/svg+xml;charset=utf-8,"+encodeURIComponent(FR.replace("<svg ",'<svg xmlns="http://www.w3.org/2000/svg" ')));x.drawImage(fr,927-72,396,144,120)}catch(e){}
+ x.textAlign="center";x.font="bold 38px "+F;x.fillText("FRÁGIL",927,555);
+ return c.toDataURL("image/png")}
+const fEst=$("fEst"),fModo=$("fModo"),fQ=$("fQ");
+const visP=()=>pedidos.filter(p=>(!fEst.value||p.estado===fEst.value)&&(!fModo.value||p.modo===fModo.value)&&(!fQ.value.trim()||String(p.n)===String(parseInt(fQ.value,10))));
+fEst.onchange=fModo.onchange=()=>renderPedidos();fQ.oninput=()=>renderPedidos();
+async function saveX(buf,name){
+  const blob=new Blob([buf],{type:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement("a");
+  a.href=url;
+  a.download=name;
+  a.rel="noopener";
+  a.style.display="none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+}
+const MED={"SOBRE":[.1,.1,.15,0],"PAQUETE XXS":[.15,.1,.1,.25],"PAQUETE XS":[.2,.15,.12,.5],"PAQUETE S":[.3,.3,.12,2],"PAQUETE M":[.3,.24,.2,5],"PAQUETE L":[.42,.3,.23,10]};
+$("dlS").onclick=async()=>{
+ if(typeof XLSX==="undefined")return toast("No se pudo cargar el generador de Excel");
+ const l=visP().filter(p=>p.modo==="shalom"&&selP.has(p.id)).sort((a,b)=>a.n-b.n);if(!l.length)return toast("Marca al menos un pedido de Shalom");
+ const num=v=>/^\d+$/.test(v)?Number(v):v;
+ const miss=l.filter(p=>!p.shO||!p.shM);if(miss.length)return toast("Falta origen o tamaño en N.º "+miss.slice(0,3).map(p=>fmtN(p.n)).join(", ")+(miss.length>3?"…":""));
+ const H=["DESTINATARIO (DOC)","TELF. DESTINATARIO","CONTACTO (DOC)","TELF. CONTACTO","NRO GRR","ORIGEN","DESTINO","MERCADERIA","ALTO","ANCHO","LARGO","PESO","CANTIDAD"];
+ const rows=l.map(p=>[num(p.dni||""),num(p.cel),num(p.dni||""),num(p.cel),"",p.shO,(p.agN||(p.dest||"").split(" · ")[0]).toUpperCase().replace(/^SHALOM\s+/,"").trim(),p.shM,...MED[p.shM],1]);
+ const ws=XLSX.utils.aoa_to_sheet([H,...rows]);ws["!cols"]=[20,18,16,15,10,20,26,14,7,7,7,7,10].map(w=>({wch:w}));
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Hoja1");
+ await saveX(XLSX.write(wb,{bookType:"xlsx",type:"array"}),"Formato-Pro-Masivo-Shalom.xlsx")};
+$("dlX").onclick=async()=>{
+ if(typeof XLSX==="undefined")return toast("No se pudo cargar el generador de Excel");
+ const l=visP().slice().sort((a,b)=>a.n-b.n);if(!l.length)return toast("No hay pedidos para descargar");
+ const H=["N.º de pedido","Fecha de registro","Estado","Cliente","DNI/CE","WhatsApp","Cómo recibe","Destino","Retiro en tienda (día y hora)","Atendió","WhatsApp de quien atendió","Productos"];
+ const rows=l.map(p=>[fmtN(p.n),p.f?new Date(p.f).toLocaleString("es-PE"):"",p.estado,p.nom,p.dni||"",p.cel,NAMES[p.modo],p.dest||"",p.retiro||"",p.at||"",p.atTel||"",p.prod||""]);
+ const ws=XLSX.utils.aoa_to_sheet([H,...rows]);ws["!cols"]=H.map((h,i)=>({wch:[14,20,11,28,13,12,16,60,22,22,16,45][i]}));
+ const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Pedidos");
+ const buf=XLSX.write(wb,{bookType:"xlsx",type:"array"});
+ await saveX(buf,"pedidos.xlsx");
+};
+$("prClose").onclick=()=>$("prev").classList.add("hide");
+$("prPrint").onclick=()=>{try{window.print()}catch(e){}toast("Si no se abre la impresión, usa Ctrl+P")};
+function docsBox(p){const t=p.prod||p.vou;return `<details class="docs"${t?" open":""}><summary>Productos y voucher${t?" ✓":""}</summary><div class="field" style="margin-top:8px"><label>Lista de productos (texto)</label><textarea rows="3" data-a="prod" data-i="${p.id}" placeholder="Ej. 2 x Polo azul talla M">${esc(p.prod||"")}</textarea></div><div class="field"><label>Voucher de pago (imagen)</label>${p.vou?`<img class="vimg" src="${p.vou}" alt="Voucher" data-a="vver" data-i="${p.id}"><div class="acts"><button class="btn sec" data-a="vver" data-i="${p.id}">Ver grande</button><button class="btn sec" data-a="vdel" data-i="${p.id}">Quitar</button></div>`:`<input type="file" accept="image/*" data-a="vsub" data-i="${p.id}">`}</div></details>`}
+function verV(p){const d=document.createElement("div");d.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:60;display:grid;place-items:center;padding:16px;overflow:auto";d.innerHTML=`<img src="${p.vou}" style="max-width:100%;max-height:100%;border-radius:8px" alt="Voucher">`;d.onclick=()=>d.remove();document.body.appendChild(d)}
+function subirV(p,f){if(!f)return;if(!/^image\//.test(f.type))return toast("Sube una imagen (JPG o PNG)");
+ const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const s=Math.min(1,900/Math.max(im.width,im.height)),c=document.createElement("canvas");c.width=Math.round(im.width*s);c.height=Math.round(im.height*s);c.getContext("2d").drawImage(im,0,0,c.width,c.height);let q=.7;p.vou=c.toDataURL("image/jpeg",q);while(p.vou.length>170000&&q>.3){q-=.1;p.vou=c.toDataURL("image/jpeg",q)}
+  if(p.vou.length>170000){delete p.vou;return toast("La imagen es muy pesada. Prueba con una captura más pequeña.")}
+  
+  if(LS){try{localStorage.setItem("pedidos",JSON.stringify(pedidos))}catch(e){delete p.vou;return toast("No hay espacio para guardar el voucher. Quita otros vouchers.")}}
+  st.set("pedidos",pedidos);renderPedidos();toast("Voucher guardado")};im.onerror=()=>toast("No se pudo leer la imagen");im.src=r.result};r.readAsDataURL(f)}
+function renderPedidos(){
+ const vis=visP();$("dlS").textContent="Excel Shalom ("+vis.filter(p=>p.modo==="shalom"&&selP.has(p.id)).length+")";const tb=vis.length?`<div class="acts" style="margin:0 0 8px;align-items:center"><label style="display:flex;gap:6px;align-items:center;margin:0"><input type="checkbox" id="selAll" style="width:auto"${vis.every(p=>selP.has(p.id))?" checked":""}>Seleccionar todos</label><button class="btn sec" id="genRot">Generar rótulos (${[...selP].filter(i=>vis.some(p=>p.id===i)).length})</button></div>`:"";
+ $("lista").innerHTML=tb+(vis.length?vis.map(p=>`<div class="ord"><div><label style="display:flex;gap:6px;align-items:center;margin:0 0 4px"><input type="checkbox" style="width:auto" data-s="${p.id}"${selP.has(p.id)?" checked":""}>Seleccionar</label><b>N.º ${fmtN(p.n)}</b> · <span class="tag ${p.modo}">${NAMES[p.modo]}</span> <b>${esc(p.nom)}</b><div class="hint">${esc(p.dest)}</div><div class="hint">${esc(p.cel)}</div>${docsBox(p)}${p.modo==="shalom"?`<div class="row" style="margin:8px 0 0"><div><label>Agencia Shalom de origen</label><select data-a="sho" data-i="${p.id}">${["","AV. DOS DE OCTUBRE","JESUS MARIA"].map(o=>`<option value="${o}"${o===(p.shO||"")?" selected":""}>${o||"Elegir origen"}</option>`).join("")}</select></div><div><label>Tamaño del paquete</label><select data-a="shm" data-i="${p.id}">${["","PAQUETE XXS","PAQUETE XS","PAQUETE S","PAQUETE M"].map(o=>`<option value="${o}"${o===(p.shM||"")?" selected":""}>${o||"Elegir tamaño"}</option>`).join("")}</select></div></div>`:""}
+ <div class="acts"><button class="btn sec" data-a="cp" data-i="${p.id}">Copiar resumen</button><button class="btn sec" data-a="wa" data-i="${p.id}">WhatsApp</button><button class="btn sec" data-a="del" data-i="${p.id}">A la papelera</button></div></div>
+ <select data-a="est" data-i="${p.id}" style="width:auto">${ESTS(p.modo).map(e=>`<option${e===p.estado?" selected":""}>${e}</option>`).join("")}</select></div>`).join(""):'<p class="hint">'+(pedidos.length?"Ningún pedido coincide con los filtros.":"Aún no hay pedidos. Registra el primero en Nuevo pedido.")+'</p>');
+ $("lista").querySelectorAll("[data-s]").forEach(c=>c.onchange=()=>{c.checked?selP.add(c.dataset.s):selP.delete(c.dataset.s);renderPedidos()});
+ if($("selAll"))$("selAll").onchange=e=>{vis.forEach(p=>e.target.checked?selP.add(p.id):selP.delete(p.id));renderPedidos()};
+ if($("genRot"))$("genRot").onclick=()=>{const l=vis.filter(p=>selP.has(p.id)).sort((a,b)=>a.n-b.n);if(!l.length)return toast("Marca al menos un pedido");$("prBody").innerHTML=l.map(rotulo).join("");$("prev").classList.remove("hide");$("prev").scrollTop=0};
+ $("lista").querySelectorAll("[data-a]").forEach(el=>{
+  const p=pedidos.find(x=>x.id===el.dataset.i),a=el.dataset.a;
+  if(a==="est")el.onchange=()=>{p.estado=el.value;st.set("pedidos",pedidos);cnt()};
+  else if(a==="prod")el.onchange=()=>{p.prod=el.value.trim();st.set("pedidos",pedidos);toast("Lista guardada")};
+  else if(a==="vsub")el.onchange=()=>subirV(p,el.files[0]);
+  else if(a==="sho"||a==="shm")el.onchange=()=>{p[a==="sho"?"shO":"shM"]=el.value;st.set("pedidos",pedidos)};
+  else el.onclick=()=>{
+   if(a==="vver")verV(p);
+   if(a==="vdel"){delete p.vou;st.set("pedidos",pedidos);renderPedidos();toast("Voucher quitado")}
+   if(a==="cp")navigator.clipboard.writeText(resumen(p)).then(()=>toast("Resumen copiado"),()=>toast("No se pudo copiar"));
+   if(a==="wa"){const n=p.cel.replace(/\D/g,"");openWa("https://wa.me/"+(n.length===9?"51"+n:n)+"?text="+encodeURIComponent(resumen(p)),"_blank")}
+   if(a==="del"){papelera.unshift({...p,delAt:new Date().toISOString()});st.set("papelera",papelera);pedidos=pedidos.filter(x=>x.id!==p.id);st.set("pedidos",pedidos);selP.delete(p.id);renderPedidos();cnt();toast("Movido a la papelera")}
+  };
+ });
+}
+function renderAgencias(){agencias.forEach((a,i)=>{if(!a.id)a.id="s"+i})}
+agencias.forEach((a,i)=>{if(!a.id)a.id="s"+i});
+$("dist").innerHTML='<option value="">Elige distrito</option>'+"Ancón,Ate,Barranco,Breña,Carabayllo,Chaclacayo,Chorrillos,Cieneguilla,Comas,El Agustino,Independencia,Jesús María,La Molina,La Victoria,Lima (Cercado),Lince,Los Olivos,Lurigancho-Chosica,Lurín,Magdalena del Mar,Miraflores,Pachacámac,Pucusana,Pueblo Libre,Puente Piedra,Punta Hermosa,Punta Negra,Rímac,San Bartolo,San Borja,San Isidro,San Juan de Lurigancho,San Juan de Miraflores,San Luis,San Martín de Porres,San Miguel,Santa Anita,Santa María del Mar,Santa Rosa,Santiago de Surco,Surquillo,Villa El Salvador,Villa María del Triunfo".split(",").map(d=>`<option>${d}</option>`).join("");
+$("aten").onchange=()=>$("atenOtroF").classList.toggle("hide",$("aten").value!=="otra");
+$("cel").oninput=()=>{$("cel").value=$("cel").value.replace(/\D/g,"").slice(0,9);const c=st.get("clientes",{})[normTel($("cel").value)];$("conoce").textContent=c?"¡Te conocemos! Datos cargados de "+c.nom+".":"";if(c){$("nom").value=c.nom;$("dni").value=c.dni||""}};
+function showOk(p){$("okTxt").textContent=resumen(p);$("ok").classList.remove("hide");$("okWa").onclick=()=>openWa("https://wa.me/51"+normTel(p.cel)+"?text="+encodeURIComponent(resumen(p)),"_blank");$("okWa2").classList.toggle("hide",!p.atTel);$("okWa2").onclick=()=>openWa("https://wa.me/51"+p.atTel+"?text="+encodeURIComponent(resumen(p)),"_blank");window.scrollTo(0,0)}
+$("okNew").onclick=()=>$("ok").classList.add("hide");
+if(!agencias.some(a=>a.c==="shalom")){agencias=agencias.concat(SEED.filter(a=>a.c==="shalom"));st.set("agencias",agencias)}
+const norm=s=>s.normalize("NFD").toLowerCase().replace(/[^a-z0-9 ]/g,"").trim();
+$("impB").onclick=()=>{let ok=0,mal=0;const emp=$("aC").value;
+ $("impT").value.split("\n").forEach(l=>{if(!l.trim())return;const p=l.split("|").map(x=>x.trim());
+  const five=p.length>=5;const pr=p[1],di=five?p[2]:"",n=five?p[3]:p[2],ad=five?p[4]:p[3];
+  if(p.length<4||!n||!ad){mal++;return}
+  const d=DEPS.find(x=>norm(x)===norm(p[0]));if(!d){mal++;return}
+  agencias.push({id:"i"+Date.now().toString(36)+(ok++),c:emp,d,p:pr||d,di,ci:di||pr||d,n,a:ad})});
+ st.set("agencias",agencias);$("impT").value="";renderAgencias();toast(ok+" agregadas"+(mal?", "+mal+" con error":""))};
+const TK="brana_tk";
+const tkGet=()=>{try{return localStorage.getItem(TK)||""}catch(e){return""}};
+async function api(path,body,method){
+ const h={"content-type":"application/json"};const tk=tkGet();if(tk)h.authorization="Bearer "+tk;
+ let r;try{r=await fetch(path,{method:method||(body?"POST":"GET"),headers:h,body:body?JSON.stringify(body):undefined})}catch(e){const x=new Error("Sin conexión");throw x}
+ let j={};try{j=await r.json()}catch(e){}
+ if(!r.ok){const e=new Error(j.error||("Error "+r.status));e.status=r.status;throw e}
+ return j}
+const cj=o=>JSON.stringify(o,Object.keys(o).sort());
+let syncOn=false,canW=true,snap={},dirty=false,syncTimer=null,pushing=false,pushAgain=false,pend=null,retryT=null,retries=0,firstSnap=true,flushing=false,pollT=null,pollBusy=false,rotBusy=false,sheetUrl="";
+const skipSig={},rotTried=new Set();
+const setSt=t=>{const e=$("syncSt");if(e)e.textContent=t};
+const curAll=()=>{const m={};pedidos.forEach(p=>{if(!p.prov)m[p.id]={...p,trash:false}});papelera.forEach(p=>{if(!p.prov)m[p.id]={...p,trash:true}});return m};
+function stMsg(){
+ const q=st.get("cola",[]).length;
+ if(!authed)return setSt(q?q+" pedido"+(q>1?"s":"")+" por enviar a Google Sheets (se reintenta solo).":"");
+ if(!canW)return setSt("Esta cuenta no puede guardar en Google Sheets.");
+ const c=curAll(),n=Object.keys(c).filter(id=>!(id in snap)).length;
+ setSt(n||q?"Enviando a Google Sheets…":"Conectado a Google Sheets ✓ (se actualiza solo)")}
+function queueNew(p){const c=st.get("cola",[]);const q={...p};delete q.vou;c.push({k:p.prov?"new":"rot",p:q});st.set("cola",c);flushCola()}
+async function flushCola(){
+ if(flushing)return;flushing=true;let c=st.get("cola",[]);
+ for(const it of c.slice()){
+  try{
+   if(it.k==="new"){const r=await api("/api/pedidos",{order:it.p});it.p.n=r.n;delete it.p.prov;const lp=pedidos.find(x=>x.id===it.p.id);if(lp){lp.n=r.n;delete lp.prov;st.set("pedidos",pedidos)}it.k="rot";st.set("cola",c)}
+   if(it.k==="rot"){await api("/api/rotulo",{id:it.p.id,n:it.p.n,png:await rotuloPNG(it.p)})}
+   c=c.filter(x=>x!==it);st.set("cola",c)
+  }catch(e){
+   if(e&&e.status&&e.status>=400&&e.status<500&&e.status!==401&&e.status!==429){c=c.filter(x=>x!==it);st.set("cola",c);continue}
+   break}}
+ flushing=false;stMsg()}
+window.addEventListener("online",flushCola);
+setInterval(()=>{if(st.get("cola",[]).length)flushCola()},20000);
+async function ensureRot(){
+ if(rotBusy||!authed)return;rotBusy=true;
+ try{let k=0;const inq=new Set(st.get("cola",[]).map(x=>x.p.id));
+  for(const o of pedidos){if(k>=3)break;if(o.rot||o.prov||!o.n||rotTried.has(o.id)||inq.has(o.id))continue;rotTried.add(o.id);k++;
+   try{await api("/api/rotulo",{id:o.id,n:o.n,png:await rotuloPNG(o)})}catch(e){}}}
+ finally{rotBusy=false}}
+window.__sync=()=>{if(!syncOn||!canW)return;dirty=true;clearTimeout(syncTimer);syncTimer=setTimeout(pushDb,700)};
+async function pushDb(){
+ if(!canW||!syncOn)return;
+ if(pushing){pushAgain=true;return}
+ pushing=true;dirty=false;let fail=0;
+ const c=curAll(),ch=[],del=[];
+ for(const id in c){const j=cj(c[id]);if(snap[id]!==j&&skipSig[id]!==j)ch.push(c[id])}
+ for(const id in snap)if(!c[id])del.push(id);
+ const batches=[];let b=[],size=0;
+ for(const o of ch){const l=JSON.stringify(o).length;if(b.length&&(size+l>3000000||b.length>=25)){batches.push(b);b=[];size=0}b.push(o);size+=l}
+ if(b.length)batches.push(b);
+ for(const bt of batches){
+  try{
+   const r=await api("/api/guardar",{orders:bt});const u=r.urls||{};
+   for(const o of bt){const x=u[o.id];if(x){const t=pedidos.find(q=>q.id===o.id)||papelera.find(q=>q.id===o.id);if(t){if(x.vou!==undefined){if(x.vou)t.vou=x.vou;else delete t.vou}if(x.rot)t.rot=x.rot}}}
+   const cc=curAll();for(const o of bt)if(cc[o.id])snap[o.id]=cj(cc[o.id]);
+   try{localStorage.setItem("pedidos",JSON.stringify(pedidos));localStorage.setItem("papelera",JSON.stringify(papelera))}catch(e){}
+  }catch(e){
+   if(e.status===401){pushing=false;return logout(true)}
+   if(e.status===400){bt.forEach(o=>skipSig[o.id]=cj(o));setSt("No se pudo guardar un pedido: "+e.message)}
+   else fail++}}
+ if(del.length){try{await api("/api/guardar",{del});del.forEach(id=>delete snap[id])}catch(e){if(e.status===401){pushing=false;return logout(true)}fail++}}
+ pushing=false;
+ if(fail){retries++;if(retries<=6){setSt("Sin conexión con Google Sheets. Reintentando… (los pedidos están a salvo en este navegador)");clearTimeout(retryT);retryT=setTimeout(()=>{dirty=true;pushDb()},8000*retries)}else setSt("No se pudo guardar en Google Sheets. Quedó guardado en este navegador.")}
+ else{retries=0;stMsg()}
+ if(pushAgain||dirty){pushAgain=false;pushDb();return}
+ if(pend){const x=pend;pend=null;applySnap(x)}}
+function applySnap(sn){
+ if(pushing||dirty){pend=sn;return}
+ const R={};sn.docs.forEach(d=>{const o=d.data();if(o)R[d.id]=o});
+ const L=curAll(),next={};let changed=firstSnap,pending=false;
+ for(const id in R){next[id]=R[id];if(cj(R[id])!==cj(L[id]||{}))changed=true}
+ for(const id in L){if(R[id])continue;if(id in snap)changed=true;else{next[id]=L[id];pending=true}}
+ snap={};for(const id in R)snap[id]=cj(R[id]);
+ for(const p of pedidos.concat(papelera))if(p.prov)next[p.id]=next[p.id]||{...p,trash:false};
+ const all=Object.values(next);
+ pedidos=all.filter(o=>!o.trash).map(o=>{const q={...o};delete q.trash;return q}).sort((a,b)=>(b.f||"").localeCompare(a.f||""));
+ papelera=all.filter(o=>o.trash).map(o=>{const q={...o};delete q.trash;return q}).sort((a,b)=>(b.delAt||"").localeCompare(a.delAt||""));
+ try{localStorage.setItem("pedidos",JSON.stringify(pedidos));localStorage.setItem("papelera",JSON.stringify(papelera))}catch(e){}
+ firstSnap=false;
+ if(changed){try{renderPedidos();renderPapelera();cnt()}catch(e){}}
+ if(pending&&canW)pushDb();else stMsg()}
+async function poll(){
+ if(!authed||pollBusy)return;pollBusy=true;
+ try{const r=await api("/api/pedidos");sheetUrl=r.sheetUrl||"";const a=$("sheetLink");if(a&&sheetUrl){a.href=sheetUrl;a.classList.remove("hide")}
+  const arr=r.pedidos||[];applySnap({docs:arr.map(o=>({id:o.id,data:()=>o}))});ensureRot()}
+ catch(e){if(e.status===401){pollBusy=false;return logout(true)}setSt("Sin conexión con Google Sheets. Reintentando…")}
+ pollBusy=false}
+function attach(){if(pollT)return;firstSnap=true;snap={};canW=true;syncOn=true;poll();pollT=setInterval(()=>{if(!document.hidden)poll()},8000)}
+function detach(){if(pollT){clearInterval(pollT);pollT=null}syncOn=false;snap={}}
+function startTeam(){authed=true;cnt();attach();showTab(want)}
+function logout(expired){try{localStorage.removeItem(TK)}catch(e){}authed=false;detach();cnt();showTab("nuevo");if(expired===true)toast("La sesión venció. Ingresa de nuevo.");stMsg()}
+document.addEventListener("visibilitychange",()=>{if(!document.hidden&&authed)poll()});
+if(tkGet()){authed=true;cnt();attach();showTab(want)}
+stMsg();flushCola();
+renderTienda();cnt();
+</script>
